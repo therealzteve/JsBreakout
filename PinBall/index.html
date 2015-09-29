@@ -4,10 +4,19 @@
 <meta charset="ISO-8859-1">
 <title>Js Pinball</title>
 <script type="text/javascript" src="lib/paperjs/paper-full.js" ></script>
-<script type="text/paperscript" src="app/pinball.js" canvas="myCanvas"  ></script>
+<script type="text/javascript" src="app/game.js" ></script>
+<script type="text/javascript" src="app/board.js"  ></script>
+<script type="text/javascript" src="app/ball.js"  ></script>
+<script type="text/javascript" src="app/LevelCreator.js"   ></script>
+<script>
+window.onload = function(){
+	breakOutGame.init();
+	breakOutGame.start();
+}
 
+</script>
 </head>
 <body>
-	<canvas resize="true" id="myCanvas"  style="border: 1px solid #000; width: 300px; height: 300px;"></canvas>
+	<canvas resize="true" id="myCanvas"  style="border: 1px solid #000; width: 100%; height: 100%"></canvas>
 </body>
 </html>
