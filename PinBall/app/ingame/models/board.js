@@ -5,12 +5,16 @@
 function board(){
 	var shape;
 	
+	var tool = new paper.Tool();
+	
 	var registerEvents = function(){
-		var tool = new Tool();
-		
 		tool.onMouseMove = function(event){
 			shape.position.x = event.point.x;
 		};
+	};
+	
+	var deRegisterEvents = function(){
+		tool.onMouseMove = function(){};
 	};
 	
 	var createShape = function(){
@@ -22,8 +26,15 @@ function board(){
 	};
 	
 	return {
+		getShape : function(){return shape;},
 		load : function(){
 			createShape();
+			registerEvents();
+		},
+		stop : function(){
+			deRegisterEvents();
+		},
+		start : function(){
 			registerEvents();
 		}
 	};

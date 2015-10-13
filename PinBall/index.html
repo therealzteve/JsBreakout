@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
 <meta charset="ISO-8859-1">
-<title>Js Pinball</title>
-<script type="text/javascript" src="lib/paperjs/paper-full.js" ></script>
-<script type="text/javascript" src="app/game.js" ></script>
-<script type="text/javascript" src="app/board.js"  ></script>
-<script type="text/javascript" src="app/ball.js"  ></script>
-<script type="text/javascript" src="app/LevelCreator.js"   ></script>
-<script>
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<!-- Canvas lib -->
+<script type="text/javascript" src="lib/paperjs/paper-full.js"></script>
+<script type="text/javascript" src="lib/angular.min.js"></script> 
+<script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
+
+
+
+
+<!-- <script>
 window.onload = function(){
-	breakOutGame.init();
-	breakOutGame.start();
+	var bGame = breakOutGame();
+	bGame.init();
+	bGame.start();
 }
 
-</script>
+</script> -->
 </head>
 <body>
-	<canvas resize="true" id="myCanvas"  style="border: 1px solid #000; width: 100%; height: 100%"></canvas>
+	<div id="game" ng-app="breakoutApp" ng-controller="gameCtrl" ng-keyup="handleKey($event)" >
+			<shortcut></shortcut>
+			<canvas resize="true" id="myCanvas"  ></canvas>
+			<div id="options"  >
+				<span ng-click="start()" >Start</span>
+				<span>Score: {{score.points}}</span>
+				<span>Pause: {{game.isPaused}}</span>
+			</div>
+	</div>
 </body>
 </html>
