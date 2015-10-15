@@ -20,7 +20,7 @@ var IngameHandler = function(options){
 			paper.setup(document.getElementById("myCanvas"));
 			
 			// init services and models
-			brickService = BrickService(levelHandler.getBricks(), ingameEventHandler);
+			brickService = BrickService(levelHandler.getBricks(),options.scoreService, ingameEventHandler);
 			ballCollisionHandler = BallCollisionHandler(ballInstance, boardInstance, brickService, view, ingameEventHandler);
 		},
 		start : function(levelNumber){

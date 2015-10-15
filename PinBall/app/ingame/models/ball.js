@@ -31,6 +31,9 @@ function ball(){
 			ball.onFrame = function(){
 				
 			};
+		},
+		destroy : function(){
+			ball.remove();
 		}
 	};
 	

@@ -36,6 +36,9 @@ function board(){
 		},
 		start : function(){
 			registerEvents();
+		},
+		destroy : function(){
+			shape.remove();
 		}
 	};
 }

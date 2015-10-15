@@ -1,8 +1,4 @@
 function breakOutGame(){
-
-	var campaignHandler = CampaignHandler();
-	var pause = false;
-	
 	var game = {
 			isPaused : pause,
 			start : function(){
@@ -12,7 +8,9 @@ function breakOutGame(){
 				
 			}
 	};
+	var pause = false;
 	var gameEventHandler = GameEventHandler(game);
+	var campaignHandler = CampaignHandler(gameEventHandler);
 
 	return game;
 }

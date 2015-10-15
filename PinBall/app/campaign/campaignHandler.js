@@ -1,6 +1,7 @@
-var CampaignHandler = function() {
+var CampaignHandler = function(gameEventHandler) {
 	var current = 0;
 	var campaignHandler;
+	var score = Score();
 	
 	var evHandler = {
 			"levelCompleted" : function() {
@@ -9,7 +10,8 @@ var CampaignHandler = function() {
 		};
 	
 	var ingameHandler = IngameHandler({
-		"parentEventHandler" : evHandler
+		"parentEventHandler" : evHandler,
+		"scoreService" : ScoreService(score)
 	});
 	
 	var storyHandler = StoryHandler({
@@ -49,7 +51,13 @@ var CampaignHandler = function() {
 		},
 		next : function(){
 			current++;
-			load();
+			
+			if(current == story.length){
+				ingameHandler.stop();
+				gameEventHandler.win();
+			}else{
+				load();
+			}
 		}
 	}
 	
