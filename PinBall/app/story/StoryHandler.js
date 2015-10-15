@@ -1,0 +1,4 @@
+var StoryHandler = function(){
+	
+	return {};
+};

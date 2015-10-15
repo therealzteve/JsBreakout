@@ -21,13 +21,19 @@ function GameEventHandler(game){
 		
 	}
 	
+	
+	
 	return {
+		
+		//When ingame lost
 		lose : function(){
 			lose();
 		},
+		//When ingame win
 		win : function(){
 			win();
 		},
+		//When a level is completed
 		levelCompleted : function(){
 			levelCompleted();
 			if(game.levelHandler.isLastLevel()){
@@ -36,9 +42,12 @@ function GameEventHandler(game){
 				loadNextLevel();
 			}
 		},
+		//When game is started
 		start : function(){
 			game.start();
 		},
+		
+		//When ingame pause
 		pause : function(){
 			game.pause();
 		}

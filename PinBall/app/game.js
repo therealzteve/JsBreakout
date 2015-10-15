@@ -1,5 +1,11 @@
 function breakOutGame(){
 
+	
+	var ingameHandler = IngameHandler();
+	
+	var campaignHandler = CampaignHandler(ingameHandler);
+
+	
 	// Model Variables
 	var ballInstance = ball();
 	var boardInstance = board();
@@ -47,21 +53,23 @@ function breakOutGame(){
 			},
 			pause : function(){
 				
-				// If game is not paused
-				if(!pause){
-					ballInstance.stop();
-					boardInstance.stop();
-					
-				// If game is paused	
-				}else{
-					ballInstance.start();
-					boardInstance.start();
-				}
-				
-				// Switch state and notify GUI
-				pause = !pause;
-				this.isPaused = !this.isPaused;
-				breakOutGame.notifyChange();
+				ingameHandler.pause();
+//				
+//				// If game is not paused
+//				if(!pause){
+//					ballInstance.stop();
+//					boardInstance.stop();
+//					
+//				// If game is paused	
+//				}else{
+//					ballInstance.start();
+//					boardInstance.start();
+//				}
+//				
+//				// Switch state and notify GUI
+//				pause = !pause;
+//				this.isPaused = !this.isPaused;
+//				breakOutGame.notifyChange();
 			},
 			stop : function(){
 				

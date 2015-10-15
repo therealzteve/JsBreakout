@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<!-- Canvas lib -->
+<script type="text/javascript" src="lib/paperjs/paper-full.js"></script>
+<script type="text/javascript" src="lib/angular.min.js"></script> 
+<script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
+
+
+<script src="app/game.js"></script>
+<script src="app/general/GameEventHandler.js"></script>
+<script src="app/gui/breakoutApp.js"></script>
+<script src="app/gui/gameController.js"></script>
+<script src="app/ingame/LevelHandler.js"></script>
+<script src="app/ingame/ingameHandler.js"></script>
+<script src="app/ingame/models/ball.js"></script>
+<script src="app/ingame/models/board.js"></script>
+<script src="app/ingame/models/brick.js"></script>
+<script src="app/ingame/models/level.js"></script>
+<script src="app/ingame/services/ballDirectionService.js"></script>
+<script src="app/ingame/services/brickService.js"></script>
+<script src="app/ingame/services/collision/ballCollisionHandler.js"></script>
+<script src="app/ingame/services/collision/collisionService.js"></script>
+<script src="app/score/models/score.js"></script>
+<script src="app/score/services/scoreService.js"></script>
+<script src="app/story/storyHandler.js"></script>
+
+
+</head>
+<body>
+	<div id="game" ng-app="breakoutApp" ng-controller="gameCtrl" ng-keyup="handleKey($event)" >
+			<shortcut></shortcut>
+			<canvas resize="true" id="myCanvas"  ></canvas>
+			<div id="options"  >
+				<span ng-click="start()" >Start</span>
+				<span>Score: {{score.points}}</span>
+				<span>Pause: {{game.isPaused}}</span>
+			</div>
+	</div>
+</body>
+</html>
