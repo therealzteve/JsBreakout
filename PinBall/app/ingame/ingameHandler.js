@@ -1,4 +1,5 @@
-var ingameHandler = function(){
+var IngameHandler = function(options){
+	var ingameEventHandler = IngameEventHandler(options.parentEventHandler);
 	
 	// Model Variables
 	var ballInstance = ball();
@@ -19,8 +20,8 @@ var ingameHandler = function(){
 			paper.setup(document.getElementById("myCanvas"));
 			
 			// init services and models
-			brickService = BrickService(levelHandler.getBricks(), scoreService, gameEventHandler);
-			ballCollisionHandler = BallCollisionHandler(ballInstance, boardInstance, brickService, view, gameEventHandler);
+			brickService = BrickService(levelHandler.getBricks(), ingameEventHandler);
+			ballCollisionHandler = BallCollisionHandler(ballInstance, boardInstance, brickService, view, ingameEventHandler);
 		},
 		start : function(levelNumber){
 			
@@ -41,7 +42,8 @@ var ingameHandler = function(){
 		stop : function(){
 			
 			// Stop the ball and remove the level
-			ballInstance.stop();
+			ballInstance.destroy();
+			boardInstance.destroy();
 			levelHandler.destroy();
 			
 			// Stop collisionHandler

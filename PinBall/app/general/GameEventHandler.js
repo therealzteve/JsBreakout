@@ -10,12 +10,13 @@ function GameEventHandler(game){
 	}
 	
 	function levelCompleted(){
-		console.log("level completed!");
+		if(game.levelHandler.isLastLevel()){
+			win();
+		}else{
+			game.levelHandler.loadNextLevel();
+		}
 	}
 	
-	function loadNextLevel(){
-		game.levelHandler.loadNextLevel();
-	}
 	
 	function reset(){
 		
@@ -36,11 +37,6 @@ function GameEventHandler(game){
 		//When a level is completed
 		levelCompleted : function(){
 			levelCompleted();
-			if(game.levelHandler.isLastLevel()){
-				win();
-			}else{
-				loadNextLevel();
-			}
 		},
 		//When game is started
 		start : function(){

@@ -7,7 +7,6 @@ angular.module('breakoutApp', [])
 	})
 	.service('gameService', function(){
 		var bGame = breakOutGame();
-		bGame.init();
 
 		return {
 			game : bGame

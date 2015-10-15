@@ -1,4 +1,8 @@
-var StoryHandler = function(){
+var StoryHandler = function(options){
 	
-	return {};
+	return {
+		start : function(number){
+			options.parentEventHandler.levelCompleted();
+		}
+	};
 };

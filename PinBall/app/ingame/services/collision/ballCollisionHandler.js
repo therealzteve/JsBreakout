@@ -1,4 +1,4 @@
-function BallCollisionHandler(ball, pad, brickService, view, gameEventHandler){
+function BallCollisionHandler(ball, pad, brickService, view, eventHandler){
 	var bds = ballDirectionService();
 	var cs = collisionService();
 	
@@ -36,7 +36,7 @@ function BallCollisionHandler(ball, pad, brickService, view, gameEventHandler){
 		}
 		
 		if(ball.getShape().position.y > view.viewSize.height){
-			gameEventHandler.lose();
+			eventHandler.lose();
 		}
 	};
 	
