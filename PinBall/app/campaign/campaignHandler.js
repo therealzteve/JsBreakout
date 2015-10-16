@@ -6,6 +6,9 @@ var CampaignHandler = function(gameEventHandler) {
 	var evHandler = {
 			"levelCompleted" : function() {
 				campaignHandler.next();
+			},
+			"pause" : function(){
+				
 			}
 		};
 	

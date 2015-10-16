@@ -1,5 +1,5 @@
 var IngameHandler = function(options){
-	var ingameEventHandler = IngameEventHandler(options.parentEventHandler);
+	var pause = false;
 	
 	// Model Variables
 	var ballInstance = ball();
@@ -11,7 +11,8 @@ var IngameHandler = function(options){
 	var ballCollisionHandler;
 	var brickService;  
 
-	return {
+	
+	var ingameHandler =  {
 		
 		init : function(){
 			
@@ -22,6 +23,7 @@ var IngameHandler = function(options){
 			// init services and models
 			brickService = BrickService(levelHandler.getBricks(),options.scoreService, ingameEventHandler);
 			ballCollisionHandler = BallCollisionHandler(ballInstance, boardInstance, brickService, view, ingameEventHandler);
+			keyEventHandler.registerEvents();
 		},
 		start : function(levelNumber){
 			
@@ -50,7 +52,26 @@ var IngameHandler = function(options){
 			paper.view.onFrame = function(){
 				
 			}
+			
+			keyEventHandler.deRegisterEvents();
+
+		}, pause : function(){
+			console.log("pause!");
+			if(!pause){
+				ballInstance.stop();
+				boardInstance.stop();
+			}else{
+				ballInstance.start();
+				boardInstance.start();
+			}
+			
+			pause = !pause;
 		}
 	}
+	
+	var ingameEventHandler = IngameEventHandler(ingameHandler,options.parentEventHandler);
+	var keyEventHandler = KeyEventHandler(ingameEventHandler);
+	
+	return ingameHandler;
 	
 }

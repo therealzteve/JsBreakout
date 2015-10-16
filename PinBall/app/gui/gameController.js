@@ -12,7 +12,7 @@ angular.module('breakoutApp')
 		
 		$scope.keyPressed = function(keyNum){
 			if(keyNum === 112){
-				gameService.game.pause();
+				//gameService.game.pause();
 			}
 		}
 		
