@@ -1,4 +1,0 @@
-//Registers key events
-mainKeyEventHandler = {
-	
-};

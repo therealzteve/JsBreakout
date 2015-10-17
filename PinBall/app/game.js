@@ -11,7 +11,7 @@ function breakOutGame(){
 	var pause = false;
 	var gameEventHandler = GameEventHandler(game);
 	var campaignHandler = CampaignHandler(gameEventHandler);
-
+	inputHandler.init();
 	return game;
 }
 
