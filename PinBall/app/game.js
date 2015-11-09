@@ -1,4 +1,7 @@
-function breakOutGame(){
+define( function(require){
+	var CampaignHandler = require("app/campaign/campaignService");
+	var UIService = require("app/gui/UIService");
+	
 	var game = {
 			isPaused : pause,
 			start : function(){
@@ -8,13 +11,17 @@ function breakOutGame(){
 				
 			}
 	};
+		
 	var pause = false;
-	var gameEventHandler = GameEventHandler(game);
-	var campaignHandler = CampaignHandler(gameEventHandler);
-	inputHandler.init();
-	return game;
-}
+	
+	var uiService = UIService(game);
+	var campaignHandler = CampaignHandler();
 
-breakOutGame.notifyChange = function(){
-	//Dummy function. Change it to hook an event for GUI Changes
-};
+	game.notifyChange = function(){
+		//Dummy function. Change it to hook an event for GUI Changes
+	};
+
+	
+	
+	//return game;
+});

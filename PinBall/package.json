@@ -11,13 +11,18 @@
 	    "grunt-contrib-jshint": "~0.10.0",
 	    "grunt-contrib-nodeunit": "~0.4.1",
 	    "grunt-contrib-uglify": "~0.5.0",
+	    "grunt-contrib-requirejs" : "latest",
 	    "grunt-include-source" : "latest",
 	    "grunt-karma" : "latest",
 	    "karma-jasmine" : "latest",
 	    "karma-firefox-launcher": "latest",
-	    "karma-phantomjs-launcher": "latest"
+	    "karma-phantomjs-launcher": "latest",
+	    "karma-requirejs" : "latest"
 	  }
   ,
+  "dependencies" : {
+	"requirejs" : "latest"  
+  },
   "author": "Steven Wruk",
   "license": "MIT"
 }

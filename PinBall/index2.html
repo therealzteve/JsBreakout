@@ -4,49 +4,23 @@
 <meta charset="ISO-8859-1">
 <title>Js Breakout</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
-<!-- Canvas lib -->
+
+<script type="text/javascript" data-main="app" src="node_modules/requirejs/require.js"></script>
 <script type="text/javascript" src="lib/paperjs/paper-full.js"></script>
 <script type="text/javascript" src="lib/angular.min.js"></script> 
+<script type="text/javascript" src="lib/underscore.js"></script> 
 <script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="lib/kibo.min.js"></script>
 
-
-<script src="app/_test/test.js"></script>
-<script src="app/campaign/campaignHandler.js"></script>
-<script src="app/data/CampaignData.js"></script>
-<script src="app/data/LevelData.js"></script>
-<script src="app/data/StoryData.js"></script>
-<script src="app/game.js"></script>
-<script src="app/general/GameEventHandler.js"></script>
-<script src="app/general/InputHandler.js"></script>
-<script src="app/gui/breakoutApp.js"></script>
-<script src="app/gui/gameController.js"></script>
-<script src="app/ingame/KeyEventHandler.js"></script>
-<script src="app/ingame/LevelHandler.js"></script>
-<script src="app/ingame/ingameEventHandler.js"></script>
-<script src="app/ingame/ingameHandler.js"></script>
-<script src="app/ingame/models/ball.js"></script>
-<script src="app/ingame/models/board.js"></script>
-<script src="app/ingame/models/brick.js"></script>
-<script src="app/ingame/models/level.js"></script>
-<script src="app/ingame/services/ballDirectionService.js"></script>
-<script src="app/ingame/services/brickService.js"></script>
-<script src="app/ingame/services/collision/ballCollisionHandler.js"></script>
-<script src="app/ingame/services/collision/collisionService.js"></script>
-<script src="app/score/models/score.js"></script>
-<script src="app/score/services/scoreService.js"></script>
-<script src="app/story/StoryHandler.js"></script>
-
-
 </head>
 <body>
-	<div id="game" ng-app="breakoutApp" ng-controller="gameCtrl" ng-keyup="handleKey($event)" >
-			<shortcut></shortcut>
-			<canvas resize="true" id="myCanvas"  ></canvas>
-			<div id="options"  >
-				<span ng-click="start()" >Start</span>
+	<div id="game" ng-controller="gameCtrl" >
+			<div id="info"  >
 				<span>Score: {{score.points}}</span>
-				<span>Pause: {{game.isPaused}}</span>
+			</div>
+			<div id="ingame"><canvas resize="true" id="myCanvas"  ></canvas></div>
+			<div id="options">
+				<span ng-click="start()" >Start</span>
 			</div>
 	</div>
 </body>

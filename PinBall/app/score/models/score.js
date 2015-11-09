@@ -1,6 +1,11 @@
-function Score(){
-	
-	return {
-		points : 0
-	};
-}
+define(
+	function(){
+	return	function Score(){
+			
+			return {
+				points : 0
+			};
+		}
+	}
+);
+
