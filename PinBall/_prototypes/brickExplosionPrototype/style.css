@@ -14,3 +14,14 @@
 	text-align: center;
 }
 
+.animationOptions{
+	width: 300px;
+	float: left;
+	padding: 5px;
+	margin: 5px;
+	border: 1px solid #CCC;
+}
+
+slider {
+	display : block;
+}

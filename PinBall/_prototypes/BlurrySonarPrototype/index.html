@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+
+
+
+</head>
+<body>
+<canvas width="800px" height="600px"  id="myCanvas"  style="background-color:#000" ></canvas>
+<script type="text/javascript" src="pjs/paper-full.js"></script>
+<script>
+	//Init Paper & Canvas
+	paper.install(window);
+	paper.setup(document.getElementById("myCanvas"));
+	
+	var radius = 10;
+	var lenseFactor = 0.3;
+	var alpha = 1
+	var arc;
+	var centerPoint = new Point(200,200);
+	var color = new Color('white');
+	
+	paper.view.onFrame = function(){
+		if(typeof arc !== 'undefined'){
+			arc.remove();
+		}
+		arc = Dash(centerPoint, lenseFactor, radius, 0, color, 10 );
+		alpha = alpha -0.01;
+		color.alpha = alpha;
+		radius+=3;
+	}
+	arc = Dash(centerPoint, lenseFactor, radius, 0, color, 10 );
+
+	
+	function Dash(point,factor,radius,direction, color, flareSize){
+		var p1 = new Point(point.x-radius, point.y);
+		var p2 =  new Point(point.x, point.y + radius*factor);
+		var p3 = new Point(point.x+radius, point.y);
+
+		var centerPoint =  calculateMiddlePoint(point, radius, factor);
+		var flareRate = 1 - flareSize / Math.abs(p1.getDistance(centerPoint));
+		
+		console.log(flareRate);
+		
+		arc = new paper.Path.Arc(p1, p2, p3) ;
+		arc.strokeColor = new Color('white');
+		arc.strokeColor.alpha = alpha;
+		arc.fillColor = {
+			gradient: {
+				stops: [[new Color(0,0), flareRate], [color, 1]],
+				        radial: true
+				},
+				origin: centerPoint,
+				destination: p2
+		};
+		
+		return arc;
+	} 	
+ 
+ function CalculateCircleCenter(A,B,C)
+ {
+     var yDelta_a = B.y - A.y;
+     var xDelta_a = B.x - A.x;
+     var yDelta_b = C.y - B.y;
+     var xDelta_b = C.x - B.x;
+
+     center = [];
+
+     var aSlope = yDelta_a / xDelta_a;
+     var bSlope = yDelta_b / xDelta_b;
+
+     center.x = (aSlope*bSlope*(A.y - C.y) + bSlope*(A.x + B.x) - aSlope*(B.x+C.x) )/(2* (bSlope-aSlope) );
+     center.y = -1*(center.x - (A.x+B.x)/2)/aSlope +  (A.y+B.y)/2;
+     return new Point(center.x, center.y);
+
+
+ }
+ 
+ function calculateMiddlePoint(p, radius, factor){
+	 var y = -0.5 * radius / factor + p.y + 0.5 * radius * factor;
+	 
+	 return new Point(p.x, y);
+ }
+</script>
+</body>
+
+</html>
