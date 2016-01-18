@@ -4,7 +4,8 @@ define(function(){
 		
 		return {
 			calculate : function(pad){
-				var winkel = (ball.getShape().position.x - pad.position.x)*1.5;
+				var winkel = ((ball.getShape().x + ball.getShape().radius/2) - (pad.x + pad.getBounds().width/2) )*1.5;
+				console.log(winkel);
 				winkel = winkel * (Math.PI/180);
 				var left = Math.sin(winkel);
 				var top  = Math.cos(winkel);

@@ -7,7 +7,7 @@ define(["app/event/eventListener"],function(EventListener){
 		listener.handlers.HIT = function(eventData){
 			if(eventData.collisionObject.type === 'brick'){
 				levelService.remove(eventData.collisionObject);
-				eventData.collisionObject.handleHit();
+				eventData.collisionObject.handleHit(eventData.collisionInfo.position);
 			}
 		}
 		

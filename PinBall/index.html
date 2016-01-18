@@ -6,8 +6,9 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 
 <script type="text/javascript" data-main="app" src="node_modules/requirejs/require.js"></script>
-<script type="text/javascript" src="lib/paperjs/paper-full.js"></script>
-<script type="text/javascript" src="lib/angular.min.js"></script> 
+<script type="text/javascript" src="lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<!-- <script type="text/javascript" src="lib/paperjs/paper-full.js"></script>
+ --><script type="text/javascript" src="lib/angular.min.js"></script> 
 <script type="text/javascript" src="lib/underscore.js"></script> 
 <script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="lib/kibo.min.js"></script>
@@ -18,7 +19,7 @@
 			<div id="info"  >
 				<span>Score: {{score.points}}</span>
 			</div>
-			<div id="ingame"><canvas resize="true" id="myCanvas"  ></canvas></div>
+			<div id="ingame"><canvas id="myCanvas"  ></canvas></div>
 			<div id="options">
 				<span ng-click="start()" >Start</span>
 			</div>

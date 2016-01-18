@@ -12,33 +12,33 @@ define(function(){
 				var cX, xY;
 				var verticalHit = false;
 				
-				if(ball.position.x < rect.bounds.left){
+				if(ball.x < rect.x){
 					// Ball is on the left side
-					cX = rect.bounds.left;
+					cX = rect.x;
 				}else{
-					if(ball.position.x > rect.bounds.left + rect.size.width ){
+					if(ball.x > rect.x + rect.getBounds().width ){
 						//Ball is on the right side
-						cX = rect.bounds.left + rect.size.width;
+						cX = rect.x + rect.getBounds().width;
 					}else{
 						
 						//Ball is between left and right side
-						cX = ball.position.x;
+						cX = ball.x;
 						verticalHit = true;
 					}
 				}
 				
-				if(ball.position.y < rect.bounds.top){
-					cY = rect.bounds.top;
+				if(ball.y < rect.y){
+					cY = rect.y;
 				}else{
-					if(ball.position.y > rect.bounds.top + rect.size.height){
-						cY = rect.bounds.top + rect.size.height;
+					if(ball.y > rect.y + rect.getBounds().height){
+						cY = rect.y + rect.getBounds().height;
 					}else{
-						cY = ball.position.y;
+						cY = ball.y;
 					}
 				}
 				
 				//If the closest point is inside the circle 
-				if( distanceSquared( ball.position.x, ball.position.y, cX, cY ) < ball.radius * ball.radius ) {
+				if( distanceSquared( ball.x, ball.y, cX, cY ) < ball.radius * ball.radius ) {
 					
 					//This box and the circle have collided 
 					return { collided : true, verticalHit : verticalHit }; 

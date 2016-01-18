@@ -1,28 +1,26 @@
-define( function(){
+define(["app/ingame/models/animations/particles"], function(animation){
 	
 	function brick(brickData){
-		var shape;
+		var container = new createjs.Container();
+		container.x = brickData.x;
+		container.y = brickData.y;
+		container.setBounds(0,0,50,20);
+
+		var shape = new createjs.Shape();
+		shape.graphics.beginFill(brickData.color).drawRect(0,0,50,20);
+		container.addChild(shape);
 		
-		var createShape = function(){
-			var topLeft = new paper.Point(brickData.x,brickData.y);
-			var rectSize = new paper.Size(50, 20);
-			var rect = new paper.Rectangle(topLeft, rectSize);
-			shape = new paper.Shape.Rectangle(rect);
-			shape.fillColor = brickData.color;
-		}
 		
 		return {
-			create : function(){
-				createShape();
-			},
 			getShape : function(){
-				return shape;
+				return container;
 			},
-			handleHit : function(){
-				this.destroy();
+			handleHit : function(hitPosition){
+				shape.alpha = 0;
+				animation(container,container.globalToLocal(hitPosition.x, hitPosition.y),this.destroy);
 			},
 			destroy : function(){
-				shape.remove();
+				shape.parent.removeChild(shape);
 			},
 			type : "brick",
 			points : brickData.points,

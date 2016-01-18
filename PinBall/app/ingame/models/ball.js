@@ -1,40 +1,27 @@
 define( function(){
 	function Ball(){
-		var ball;
-		var createShape = function(){
-			ball = new Shape.Circle(new Point(80, 50), 10);
-			ball.strokeColor = 'black';
-			ball.fillColor = 'white';
+		var shape = new createjs.Shape();
+		shape.graphics.beginFill("white").drawCircle(0, 0, 10);
+		shape.x = 50;
+		shape.y = 80;
+		shape.radius = 10;
+		
+		var moveBall = function(){
+			shape.x += myBall.direction.x * myBall.speed;
+			shape.y += myBall.direction.y * myBall.speed;
 		};
-		
-		
 		
 		var myBall = {
 			getShape : function(){
-				return ball;
+				return shape;
 			},
-			speed : 5,
+			speed : 3,
 			direction : { x : 0 , y : 1 } , 
-			load : function(){
-				createShape();
-			},
 			start : function(){
-				ball.onFrame = function(){
-					ball.translate(
-							new Point(
-									myBall.direction.x * myBall.speed,
-									myBall.direction.y * myBall.speed
-									)
-							);
-				}
+				shape.addEventListener('tick',moveBall);
 			},
 			stop : function(){
-				ball.onFrame = function(){
-					
-				};
-			},
-			destroy : function(){
-				ball.remove();
+				shape.removeEventListener('tick', moveBall);
 			}
 		};
 		

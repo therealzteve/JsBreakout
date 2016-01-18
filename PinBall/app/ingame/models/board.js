@@ -1,31 +1,36 @@
 define(function(){
-	function Board(){
-		var shape;
+	function Board(stage){
+		var shape = new createjs.Shape();
+		shape.graphics.beginFill('green').drawRect(0,0,60,10);
+		shape.x = 0;
+		shape.y = stage.canvas.height-20;
 		
-		var tool = new paper.Tool();
+		shape.setBounds(0,0,60,10);
+		
+		
+		var changePosition = function(event){
+			shape.x = event.stageX;
+		};
 		
 		var registerEvents = function(){
-			tool.onMouseMove = function(event){
-				shape.position.x = event.point.x;
-			};
+			stage.addEventListener('stagemousemove',changePosition);
 		};
 		
 		var deRegisterEvents = function(){
-			tool.onMouseMove = function(){};
+			stage.removeEventListener('stagemousemove',changePosition);
 		};
 		
-		var createShape = function(){
-			var topLeft = new paper.Point(0, paper.view.size.height - 20);
-			var rectSize = new paper.Size(60, 10);
-			var rect = new paper.Rectangle(topLeft, rectSize);
-			shape = new paper.Shape.Rectangle(rect);
-			shape.fillColor = 'green';
-		};
+//		var createShape = function(){
+//			var topLeft = new paper.Point(0, paper.view.size.height - 20);
+//			var rectSize = new paper.Size(60, 10);
+//			var rect = new paper.Rectangle(topLeft, rectSize);
+//			shape = new paper.Shape.Rectangle(rect);
+//			shape.fillColor = 'green';
+//		};
 		
 		return {
 			getShape : function(){return shape;},
 			load : function(){
-				createShape();
 				registerEvents();
 			},
 			stop : function(){
@@ -33,9 +38,6 @@ define(function(){
 			},
 			start : function(){
 				registerEvents();
-			},
-			destroy : function(){
-				shape.remove();
 			},
 			type : "pad",
 			handleHit : function(){

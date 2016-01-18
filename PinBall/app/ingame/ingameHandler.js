@@ -12,15 +12,22 @@ define(
 
 		var pause = false;
 		
+		var stage = new createjs.Stage("myCanvas");
+		stage.canvas.width = 800;
+		stage.canvas.height = 300;
+		createjs.Ticker.setFPS(60);
+		createjs.Ticker.addEventListener("tick", stage);
+		
+		
 		// Model Variables
-		var ball = Ball();
+		var ball = Ball(stage);
 		var gameObjects = [];
-		var board = Board();
+		var board = Board(stage);
 		
 		// Services and handlers
 		var eventManager = EventManager(parentEventManager);
-		var levelService = LevelService(gameObjects, eventManager);
-		var collisionService = CollisionService(gameObjects, ball, eventManager);
+		var levelService = LevelService(gameObjects, stage, eventManager);
+		var collisionService = CollisionService(gameObjects, ball, stage, eventManager);
 	
 		eventManager.registerListener(CollisionHandler(ball));
 		gameObjects.push(board);
@@ -28,13 +35,6 @@ define(
 		var ingameHandler =  {
 			
 			init : function(){
-				
-				// Init Paper & Canvas
-				paper.install(window);
-				paper.setup(document.getElementById("myCanvas"));
-				
-				// init services and models
-				//keyEventHandler.registerEvents();
 			},
 			start : function(levelNumber){
 				
@@ -43,26 +43,25 @@ define(
 	
 				// Load Display the board and the ball and start it
 				board.load();
-				ball.load();
+				stage.addChild(board.getShape());
+				stage.addChild(ball.getShape());
 				ball.start();
 				
+				
+				stage.addEventListener('tick', collisionService.checkForCollisions);
 				// Start Collision Handler
-				paper.view.onFrame = function(){
+				/*paper.view.onFrame = function(){
 					collisionService.checkForCollisions();
-				}
+				}*/
 				
 			},
 			stop : function(){
 				
 				// Stop the ball and remove the level
-				ball.destroy();
-				board.destroy();
+				stage.removeChild(ball.getShape());
+				stage.removeChild(board.getShape());
 				levelService.destroy();
 				
-				// Stop collisionHandler
-				paper.view.onFrame = function(){
-					
-				}
 				
 				//keyEventHandler.deRegisterEvents();
 	
