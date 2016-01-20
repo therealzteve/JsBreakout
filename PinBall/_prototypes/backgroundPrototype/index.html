@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body >
+	<div id="game">
+			<div id="ingame"><canvas  id="myCanvas"  ></canvas></div>
+	</div>
+<script type="text/javascript" src="lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+<script type="text/javascript" src="lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/jquery-ui.min.js" ></script>
+<script>
+	var lines = [];
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 300;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	
+	var animationContainer = new createjs.Container();
+	stage.addChild(animationContainer);
+	
+	var wl = WalkingLine({'x' : 800*Math.random(), 'y' : 300*Math.random()},{'x' : 2*Math.random(), 'y' : 2*Math.random()} )
+	
+	animationContainer.addEventListener('tick',function(){
+		var random = Math.random()*100;
+		 if(random > 98){
+			var wl = WalkingLine({'x' : 800*Math.random(), 'y' : 300*Math.random()},{'x' : 2*Math.random() -1, 'y' : 2*Math.random() -1} )
+			lines.push(wl);
+		} 
+		
+		for(var i = 0 ; i < lines.length; i++){
+			lines[i].draw();
+			
+			if(lines[i].state === 1){
+				lines.splice(i, 1);
+			}
+		}
+		
+	});
+	
+	
+	
+	
+	function WalkingLine(start, direction){
+		var speed = 25;
+		var distance = 1;
+		var maxKnicks = 3;
+		var currentKnicks = 0;
+		var lines = [];
+		var current = 0;
+		var color = randomColor();
+		
+		
+		var line = {};
+		line.state = 0;
+		line.draw = function(){
+			
+			if(currentKnicks < maxKnicks){
+				distance+= speed;
+				
+				if(typeof lines[current] === 'undefined'){
+					lines[current] = new createjs.Shape();
+					stage.addChild(lines[current]);
+					//lines[current].alpha = 0;
+				}
+				if(lines[current].alpha < 1){
+					lines[current].alpha += 0.001;
+				}
+				lines[current].graphics.beginStroke(color);
+				lines[current].graphics.moveTo(start.x,start.y);
+				
+				drawLines();
+				for(var i = 0; i < lines.length-1; i++){
+					lines[i].alpha -= 0.003;
+					if(lines[i].alpha <= 0 ){
+						stage.removeChild(lines[i]);
+						lines.splice(i, 1);
+						current--;
+					}
+				}
+			}else{
+				for(var i = 0; i < lines.length; i++){
+					lines[i].alpha -= 0.007;
+					if(lines[i].alpha <= 0 ){
+						stage.removeChild(lines[i]);
+						lines.splice(i, 1);
+					}
+				}
+				
+				
+				if(lines.length === 0){
+					line.state = 1;
+				}
+			}
+			
+			
+			
+			
+		}
+		
+		function drawLines(){
+			var compareY;
+			
+			if(direction.y <= 0 ){
+				compareY = Math.abs(start.y/direction.y);
+			}else{
+				compareY = Math.abs((stage.canvas.height-start.y)/direction.y);
+			}
+			
+			if(start.x + distance * direction.x < 0){
+				var x = 0;
+				var y = start.y + (Math.abs(start.x/direction.x))*direction.y;
+				lines[current].graphics.lineTo(x, y);			
+				lines[current].cache(Math.min(x,start.x), Math.min(y, start.y), Math.abs(start.x - x), Math.abs(start.y - y));
+				distance = distance - Math.abs(start.x/direction.x);
+				direction.x = -direction.x;
+				start = { 'x' : x ,'y' : y };
+				current++;
+				currentKnicks++;
+				return
+			}
+			
+			
+			if(start.x + distance * direction.x > stage.canvas.width){
+				var x = stage.canvas.width;
+				var y = start.y + (Math.abs((stage.canvas.width - start.x)/direction.x))*direction.y;
+				lines[current].graphics.lineTo(x, y);			
+				lines[current].cache(Math.min(x,start.x), Math.min(y, start.y), Math.abs(start.x - x), Math.abs(start.y - y));
+
+				distance = distance - Math.abs((stage.canvas.width - start.x)/direction.x);
+				direction.x = -direction.x;
+				start = { 'x' : x ,'y' : y };
+				current++;
+				currentKnicks++;
+				return;
+			}
+			
+			if(start.y + distance*direction.y <  0){
+				var x = start.x + (Math.abs(start.y/direction.y))*direction.x;
+				var y = 0;
+				lines[current].graphics.lineTo(x, y);			
+				lines[current].cache(Math.min(x,start.x), Math.min(y, start.y), Math.abs(start.x - x), Math.abs(start.y - y));
+
+				distance = distance - Math.abs(start.y/direction.y);
+				direction.y = -direction.y;
+				start = { 'x' : x ,'y' : y };
+				current++;
+				currentKnicks++;
+				return;
+			} 
+			
+			if(start.y + distance*direction.y > stage.canvas.height){
+
+				var x = start.x + (Math.abs((stage.canvas.height - start.y)/direction.y)) * direction.x;
+				var y = stage.canvas.height;
+				lines[current].graphics.lineTo(x, y);			
+				lines[current].cache(Math.min(x,start.x), Math.min(y, start.y), Math.abs(start.x - x), Math.abs(start.y - y));
+
+				distance = distance - Math.abs((stage.canvas.height - start.y)/direction.y);
+				direction.y = -direction.y;
+				start = { 'x' : x ,'y' : y };
+				current++;				
+				currentKnicks++;
+				return ;
+			}
+			lines[current].graphics.lineTo(start.x + distance*direction.x, start.y + distance*direction.y);		
+	 		var blurFilter = new createjs.BlurFilter(2, 2, 1);
+			lines[current].filters = [blurFilter]; 
+				
+		}
+		
+		return line;
+	}
+	
+	function randomColor (){
+    	var color="#";
+    	for (x=0;x<6;x++){
+    		color+= "0123456789ABCDEF".charAt (Math.round (Math.random ()*1000)%16);
+    	}
+    	return color;
+    }
+	
+</script>
+</body>
+
+</html>

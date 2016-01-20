@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body >
+	<div id="game">
+			<div id="ingame"><canvas  id="myCanvas"  ></canvas></div>
+	</div>
+<script type="text/javascript" src="lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+<script type="text/javascript" src="lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/jquery-ui.min.js" ></script>
+<script>
+	var triangles = [];
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 300;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var triangleShape = new createjs.Shape();
+	triangleShape.graphics.beginFill("rgba(255,255,255,0.01)").drawPolyStar(0,0,400,3);
+	triangleShape.cache(0,0,50,50);
+	
+	var animationContainer = new createjs.Container();
+	stage.addChild(animationContainer);
+
+	
+	for(var i = 0; i < 20;i++){
+		var t = Triangle(Math.random()*800, Math.random()*300);
+		triangles.push(t);
+		animationContainer.addChild(t.shape);
+	}
+	
+	animationContainer.addEventListener("tick",function(){
+		for(var i = 0; i < triangles.length; i++){
+			triangles[i].shape.rotation+= 0.3;
+		}
+	});
+	
+
+	
+	function Triangle(x,y){
+		
+		var shape = triangleShape.clone();
+		shape.x = x;
+		shape.y = y;
+		shape.rotation = Math.random()*360;
+
+		var triangle = {};
+		triangle.shape = shape;
+		
+		return triangle;
+	}
+	
+</script>
+</body>
+
+</html>

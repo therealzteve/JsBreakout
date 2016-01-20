@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body >
+	<div id="game">
+			<div id="ingame"><canvas  id="myCanvas"  ></canvas></div>
+	</div>
+<script type="text/javascript" src="lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+<script type="text/javascript" src="lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/jquery-ui.min.js" ></script>
+<script>
+	var lines = [];
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 300;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var lineContainer = new createjs.Container();
+	var line = new createjs.Shape();
+	line.graphics.setStrokeStyle(8,"round").beginStroke("rgba(255,255,255,1)").moveTo(0,0).lineTo(100,100);
+	var bluryLine = line.clone();
+	var blurFilter = new createjs.BlurFilter(7, 7, 1);
+	bluryLine.filters = [blurFilter]; 
+	bluryLine.cache(0,0,100,100);
+	lineContainer.addChild(bluryLine);
+	lineContainer.addChild(line);
+	//lineContainer.cache(0,0,100,100);
+	
+	//stage.addChild(lineContainer);
+	
+	var animationContainer = new createjs.Container();
+	stage.addChild(animationContainer);
+	for(var i = 0; i < 100;i++){
+		var t = Line(Math.random()*800, Math.random()*300);
+		lines.push(t);
+		for(var j = 0; j < t.shape.children.length;j++){
+			t.shape.children[j].cache(0,0,100,100);
+		}
+		animationContainer.addChild(t.shape);
+	} 
+	
+	animationContainer.addEventListener("tick",function(){
+		 for(var i = 0; i < lines.length; i++){
+			var random = Math.random()*100;
+			if(random > 50){
+				lines[i].shape.alpha += 0.01;
+				if(lines[i].shape.alpha > 1){
+					lines[i].shape.alpha = 1;
+				}
+			}else{
+				lines[i].shape.alpha -= 0.01;
+				if(lines[i].shape.alpha < 0){
+					lines[i].shape.alpha = 0;
+				}
+			}
+			/* if(random > 95){
+				lines[i].shape.x = Math.random()*800;
+				lines[i].shape.y = Math.random()*300;			
+			} */
+		} 
+	});
+	
+
+	
+	function Line(x,y){
+		
+		var shape = lineContainer.clone(true);
+		shape.alpha = 0.5;
+		shape.x = x;
+		shape.y = y;
+		shape.rotation = Math.random()*360;
+
+		var randomLine = {};
+		randomLine.shape = shape;
+		
+		return randomLine;
+	}
+	
+</script>
+</body>
+
+</html>

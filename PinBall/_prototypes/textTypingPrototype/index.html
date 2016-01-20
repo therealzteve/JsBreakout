@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body >
+	<div id="game">
+			<div id="ingame"><canvas  id="myCanvas"  ></canvas></div>
+	</div>
+<script type="text/javascript" src="lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+<script type="text/javascript" src="lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/jquery-ui.min.js" ></script>
+<script>
+	var texts = [];
+	var current = 0;
+
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 300;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	
+	var animationContainer = new createjs.Container();
+	stage.addChild(animationContainer);
+	
+	var tt = TypingText("GO AWAY. \nTHIS IS AN ERROR...\nFVUH§$G§)F§HFJ§)$G%UFH(DJFHVVHE(§FHD))",20,70,5);
+	var tt2 = TypingText("I REPEAT!",20,70,5);
+	var tt3 = TypingText("GO AWAY!",20,70,5);
+	var tt4 = TypingText("A",20,70,0);
+	var tt5 = TypingText("B",20,70,0);
+	var tt6 = TypingText("C",20,70,0);
+	var tt7 = TypingText("D",20,70,0);
+	var tt8 = TypingText("E",20,70,0);
+	var tt9 = TypingText("F",20,70,0);
+	var tt10 = TypingText("G",20,70,0);
+
+
+	texts.push(tt);
+	texts.push(tt2);
+	texts.push(tt3);
+	texts.push(tt4);
+	texts.push(tt5);
+	texts.push(tt6);
+	texts.push(tt7);
+	texts.push(tt8);
+	texts.push(tt9);
+	texts.push(tt10);
+
+	animationContainer.addChild(texts[0].shape);
+	console.log(tt);
+
+	animationContainer.addEventListener('tick',function(){
+		if(current < texts.length){
+			if(texts[current].state !== TypingText.STATE_FINISHED){
+				texts[current].draw();
+			}else{
+				animationContainer.removeChild(texts[current].shape);
+				current++;
+				if(current < texts.length){
+					animationContainer.addChild(texts[current].shape);
+				}
+			}
+		}else{
+			animationContainer.removeEventListener("tick",this);
+		}
+	});
+	
+	
+
+	function TypingText(text, size, shakeAmount,timeToLive){
+		TypingText.STATE_RUNNING = 0;
+		TypingText.STATE_PENDING = 1;
+		TypingText.STATE_FINISHED = 2;
+		
+		var current = 0 ;
+		var pendingTime;
+		
+		var displayText = new createjs.Text("", "20px Arial", "#ff7700");
+		displayText.x = 100;
+		displayText.y = 100;
+		displayText.textBaseline = "alphabetic";
+		
+		var typingText = {};
+		typingText.state = TypingText.STATE_RUNNING;
+		typingText.shape = displayText;
+		typingText.draw = function(){
+			if(typingText.state === TypingText.STATE_RUNNING){
+				var random = Math.random()*100;
+				if(random > 87){
+			 		if(current < text.length){
+			 			current++;
+				 		displayText.text = text.substring(0,current);
+				 		displayText.font = (size + Math.random()*shakeAmount - shakeAmount/2) + "px Arial"; 
+			 		}else{ 
+			 			typingText.state = TypingText.STATE_PENDING;
+			 			pendingTime = new Date();
+			 		}
+			 	}
+				return;
+			}
+			
+			if(typingText.state === TypingText.STATE_PENDING){
+				var random = Math.random()*100;
+				if(random > 87){
+			 		displayText.font = (size + Math.random()*shakeAmount - shakeAmount/2) + "px Arial"; 
+				}
+				if(((new Date()).getTime() - pendingTime.getTime())/1000 > timeToLive ){
+					typingText.state = TypingText.STATE_FINISHED;
+				}
+				
+				return;
+			}
+		}
+		
+		return typingText;
+	}
+	
+
+	
+</script>
+</body>
+
+</html>

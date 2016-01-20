@@ -1,0 +1,25 @@
+#myCanvas {
+	border: 1.0px solid #000;
+	cursor: none;
+	margin:auto;
+	display: block;
+	background: black;
+}
+
+#game {
+	width: 900px;
+	margin: auto;
+	text-align: center;
+}
+
+.animationOptions{
+	width: 300px;
+	float: left;
+	padding: 5px;
+	margin: 5px;
+	border: 1px solid #CCC;
+}
+
+slider {
+	display : block;
+}
