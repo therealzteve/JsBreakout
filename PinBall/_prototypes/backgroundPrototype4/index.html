@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body >
+	<div id="game">
+			<div id="ingame"><canvas  id="myCanvas"  ></canvas></div>
+	</div>
+<script type="text/javascript" src="lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+<script type="text/javascript" src="lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/jquery-ui.min.js" ></script>
+<script>
+	
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 300;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var myPolygon = new createjs.Shape();
+	
+
+	stage.addChild(myPolygon);
+	
+	var i = 1;
+	var j = 1;
+	var k = 1;
+	var speed = 0.06;
+/* 	stage.addEventListener("tick",function(){
+		
+		if(i > speed){
+			i -= speed;
+		}else{
+			i = 0;
+		}
+		if( i < 0.9){
+			if(j > speed){
+				j-= speed;
+			}else{
+				j = 0;
+			}
+		}
+		
+		if(i < 0.1){
+			if(k > speed){
+				k -= speed;
+			}else{
+				k = 0;
+			}
+		}
+		
+		
+		myPolygon.graphics
+		.beginLinearGradientFill(["rgba(0,0,0,0)","rgba(0,255,0,1)","rgba(0,0,0,1)"], [i, j, k], 10, 10, 100, 100)
+		.beginLinearGradientStroke(["#000","#0F0"], [0.4, 1], 10, 10, 100, 100)
+		.moveTo(10,10)
+		.lineTo(20,50)
+		.lineTo(10,100)
+		.lineTo(70,90)
+		.lineTo(100,100)
+		.lineTo(120,60)
+		.lineTo(100,10);
+		//.closePath();
+	}); */
+	
+	
+	
+	var chasm = function(){
+		var myPolygon = new createjs.Shape();
+		var points =  [];
+		points.push({x: 0, y: 0});
+		
+		var current_X = 0 ;
+		//Generate Points:
+		for(var i = 0; i < 3; i++){
+			current_X = current_X + Math.random()* (300-current_X);
+			points.push({x : current_X, y : Math.random()*60})
+		}	
+			
+		points.push({x: 300, y: 0 });	
+		
+		
+		myPolygon.graphics.moveTo(10,10);
+		myPolygon.graphics.beginLinearGradientStroke(["#000","#0F0"], [0, 1], 10, 10, 10, 20);
+		//myPolygon.graphics.beginStroke("#FFF");
+		console.log(points);
+		for(var i = 0; i < points.length; i++){
+			myPolygon.graphics.lineTo(points[i].x,points[i].y );
+		}
+		
+		myPolygon.x = Math.random()*800;
+		myPolygon.y = Math.random()*300;
+		myPolygon.rotation = Math.random()*360;
+		return { getPolygon : function(){return myPolygon;}};
+	} 
+	
+	var chas1 = chasm();
+	var chas2 = chasm();
+	var chas3 = chasm();
+	var chas4 = chasm();
+	var chas5 = chasm();
+	stage.addChild(chas1.getPolygon());
+	stage.addChild(chas2.getPolygon());
+	stage.addChild(chas3.getPolygon());
+	stage.addChild(chas4.getPolygon());
+	stage.addChild(chas5.getPolygon());
+	stage.update();
+</script>
+</body>
+
+</html>
