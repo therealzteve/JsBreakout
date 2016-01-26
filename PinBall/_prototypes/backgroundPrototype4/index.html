@@ -22,6 +22,7 @@
 	
 	
 	var stage = new createjs.Stage("myCanvas");
+	var rotationSpeed = 0.1;
 	stage.canvas.width = 800;
 	stage.canvas.height = 300;
 	createjs.Ticker.setFPS(60);
@@ -30,43 +31,12 @@
 
 	
 	var chasm = function(){
-		var myPolygon = new createjs.Shape();
-		var points =  [];
-		var alpha = 1;
-		points.push({x: 0, y: 0});
-		
-		var current_X = 0 ;
-		//Generate Points:
-		for(var i = 0; i < 4; i++){
-			current_X = current_X + Math.random()* (300-current_X);
-			points.push({x : current_X, y : Math.random()*60})
-		}	
-			
-		points.push({x: 300, y: 0 });	
+		var myPolygon = new createjs.Container();
 		
 		
-		myPolygon.graphics.moveTo(10,10);
-		myPolygon.graphics.beginLinearGradientStroke(["#000","#0F0"], [0, 1], 10, 10, 10, 20);
-		myPolygon.graphics.beginLinearGradientFill(["rgba(0,0,0,0)","#0F0"], [0, 1], 10, 10, 10, 60);
-		//myPolygon.graphics.beginStroke("#FFF");
-		for(var i = 0; i < points.length; i++){
-			myPolygon.graphics.lineTo(points[i].x,points[i].y );
-		}
-		
-		myPolygon.x = Math.random()*800;
-		myPolygon.y = Math.random()*300;
-		myPolygon.rotation = Math.random()*360;
-		
-		myPolygon.addEventListener("tick", function(){
-			myPolygon.alpha = alpha;
-			alpha = alpha - 0.1;
-			
-			if(alpha <= 0){
-				myPolygon.removeAllEventListeners("tick");
-				stage.removeChild(myPolygon);
-			}
+		myPolygon.addEventListener("tick",function(){
+			myPolygon.rotation = myPolygon.rotation + rotationSpeed; 
 		});
-		
 		return { getPolygon : function(){return myPolygon;}};
 	} 
 	

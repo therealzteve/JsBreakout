@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body >
+	<div id="game">
+			<div id="ingame"><canvas  id="myCanvas"  ></canvas></div>
+			<button id="myButton" >Stop </button>
+	</div>
+<script type="text/javascript" src="lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+<script type="text/javascript" src="lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/jquery-ui.min.js" ></script>
+<script>
+	
+	var rotation = 1;
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 800;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+
+	
+	var rotator = function(){
+		var radius = 1;
+		var rise = true;
+		var myPolygon = new createjs.Container();
+		myPolygon.x = 400;
+		myPolygon.y = 400;
+		var beams =[];
+		for(var i = 0; i <  10; i++){
+			var myShape =  new createjs.Shape();
+			myShape.graphics.beginRadialGradientFill(["#0F0","#000"], [0, 1], 0, 0, 0, 200, 200,33).drawRect(0,0,200,200);
+			myShape.rotation = (360/10)*i;
+			beams.push(myShape);
+			myPolygon.addChild(myShape);
+		}
+		
+		
+		var myShape2 = new createjs.Shape();
+		myShape2.graphics.beginRadialGradientFill(["rgba(0,0,0,0)","#F00"], [0, 1], 0, 0, 0, 0, 0,100).drawCircle(0,0,100);
+		
+		
+		myPolygon.addChild(myShape2);
+		myPolygon.addEventListener("tick", function(){
+			if(rise){
+				radius += 0.1*radius;
+			}else{
+				radius -= 0.1*radius;
+			}
+			
+			if(radius < 1 ){
+				radius =  1;
+				rise = true;
+			}
+			
+			if(radius > 400){
+				radius = 400;
+				rise = false;
+			}
+			myPolygon.rotation = myPolygon.rotation + rotation;
+			myShape2.graphics.clear().beginRadialGradientFill(["rgba(0,0,0,0)","#F00"], [0, 1], 0, 0, 0, 0, 0,radius).drawCircle(0,0,radius);
+		});
+		
+		return { getPolygon : function(){return myPolygon;}};
+	} 
+	
+	
+	var myrotator = rotator();
+	stage.addChild(myrotator.getPolygon());
+	
+	
+	document.getElementById("myButton").onclick = function(){
+		console.log("stop");
+		stage.removeAllEventListeners("tick");
+	};
+	
+	
+</script>
+</body>
+
+</html>

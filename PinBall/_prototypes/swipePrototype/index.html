@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body >
+	<div id="game">
+			<div id="ingame"><canvas  id="myCanvas"  ></canvas></div>
+			<button id="myButton" >Stop </button>
+	</div>
+<script type="text/javascript" src="lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+<script type="text/javascript" src="lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<script type="text/javascript" src="lib/SoundJS-0.6.2/lib/soundjs-0.6.2.combined.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4.custom/jquery-ui.min.js" ></script>
+<script>
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 800;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var swiper = function(){
+		var myShape = new createjs.Shape();
+		
+		myShape
+			.graphics
+			.beginLinearGradientFill(["#000","#999", "#FFF"],[ 0.5,0.97, 1], 0, 0, 0, 120)
+			.drawRect(0, 0, 1000, 120);
+		
+		return myShape;
+	}
+	
+	
+	
+
+	
+	createjs.Sound.addEventListener("fileload", handleLoadComplete);
+	createjs.Sound.registerSound({src:"Intro.mp3", id:"sound"});
+	function handleLoadComplete(event) {
+	    createjs.Sound.play("sound");
+	    window.setTimeout(function(){
+			var mySwiper = swiper();
+			mySwiper.x = 100;
+			mySwiper.y = 100;
+			stage.addChild(mySwiper);
+			stage.addEventListener("tick",function(){
+				mySwiper.y += 12;
+				mySwiper.alpha -= 0.04;
+			});
+		}, 6440)
+	}
+	
+</script>
+</body>
+
+</html>
