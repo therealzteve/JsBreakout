@@ -1,9 +1,20 @@
 {
+  "ide": {
+    "scriptPaths": [
+      {
+        "type": "FOLDER",
+        "path": "app"
+      }
+    ]
+  },
   "plugins": {
     "guess-types": {
       
     },
     "outline": {
+      
+    },
+    "doc_comment": {
       
     },
     "node": {
@@ -15,5 +26,6 @@
   },
   "libs": [
     "ecma5"
-  ]
+  ],
+  "ecmaVersion": 5
 }

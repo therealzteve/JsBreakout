@@ -27,7 +27,8 @@
 	createjs.Ticker.setFPS(60);
 	createjs.Ticker.addEventListener("tick", stage);
 	
-	var swiper = function(){
+	var swiper = function(radius){
+		
 		var myShape = new createjs.Shape();
 		
 		myShape
@@ -35,28 +36,40 @@
 			.beginLinearGradientFill(["#000","#999", "#FFF"],[ 0.5,0.97, 1], 0, 0, 0, 120)
 			.drawRect(0, 0, 1000, 120);
 		
-		return myShape;
+		
+		var move = function(){
+			
+		}
+		
+		var getShape = function(){
+			return myShape;
+		}
+		
+		return return {
+			getShape : getShape,
+			move : move
+		};
 	}
 	
 	
-	
+	var mySwiper = swiper();
+	mySwiper.x = 100;
+	mySwiper.y = 100;
+	stage.addChild(mySwiper);
+	stage.addEventListener("tick",function(){
+		mySwiper.y += 12;
+		mySwiper.alpha -= 0.04;
+	});
 
 	
-	createjs.Sound.addEventListener("fileload", handleLoadComplete);
+/* 	createjs.Sound.addEventListener("fileload", handleLoadComplete);
 	createjs.Sound.registerSound({src:"Intro.mp3", id:"sound"});
 	function handleLoadComplete(event) {
 	    createjs.Sound.play("sound");
 	    window.setTimeout(function(){
-			var mySwiper = swiper();
-			mySwiper.x = 100;
-			mySwiper.y = 100;
-			stage.addChild(mySwiper);
-			stage.addEventListener("tick",function(){
-				mySwiper.y += 12;
-				mySwiper.alpha -= 0.04;
-			});
+			
 		}, 6440)
-	}
+	} */
 	
 </script>
 </body>
