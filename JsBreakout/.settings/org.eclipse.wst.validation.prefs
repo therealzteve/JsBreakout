@@ -1,7 +1,7 @@
 DELEGATES_PREFERENCE=delegateValidatorList
 USER_BUILD_PREFERENCE=enabledBuildValidatorList
 USER_MANUAL_PREFERENCE=enabledManualValidatorList
-USER_PREFERENCE=overrideGlobalPreferencestruedisableAllValidationfalseversion1.2.700.v201508251749
+USER_PREFERENCE=overrideGlobalPreferencestruedisableAllValidationfalseversion1.2.600.v201501211647
 disabled=06target
 eclipse.preferences.version=1
 override=true
@@ -9,5 +9,6 @@ suspend=false
 vals/org.eclipse.wst.html.core.HTMLValidator/groups=0107include06111contentType136org.eclipse.wst.html.core.htmlsourceT07fileext04htmlF07fileext05xhtmlF07fileext03htmF07fileext04htplF07fileext03wmlF0107exclude0204file03libF0204file08**/*lib*F01
 vals/org.eclipse.wst.jsdt.web.core.JsBatchValidator/global=FF01
 vals/org.eclipse.wst.jsdt.web.core.JsBatchValidator/groups=0107include01113projectNature134org.eclipse.wst.jsdt.core.jsNature0107include11007fileext04htmlF07fileext05xhtmlF07fileext03htmF07fileext04htplF07fileext03jspF07fileext03jsfF07fileext03jsvF07fileext04jtplF111contentType136org.eclipse.wst.html.core.htmlsourceT111contentType134org.eclipse.jst.jsp.core.jspsourceT0107exclude0204file08**/*lib*F0104file05*lib*F01
+vals/tern.eclipse.ide.linter.core.TernValidator/global=FF03
 vals/tern.eclipse.ide.linter.core.TernValidator/groups=0107include08111contentType134org.eclipse.wst.jsdt.core.jsSourceT111contentType136org.eclipse.wst.html.core.htmlsourceT111contentType134org.eclipse.jst.jsp.core.jspsourceT07fileext02jsF07fileext04htmlF07fileext03htmF07fileext03jspF07fileext03phpF0107exclude0104file05*lib*F01
 vf.version=3
