@@ -25,44 +25,71 @@
 	stage.canvas.width = 800;
 	stage.canvas.height = 800;
 	createjs.Ticker.setFPS(60);
+	createjs.Ticker.timingMode = createjs.Ticker.RAF;
 	createjs.Ticker.addEventListener("tick", stage);
 	
-	var swiper = function(radius){
-		var distance_x;
-		var distance_y;
+	var swiper = function(x,y,radius){
+		var distance = 0;
+		
 		
 		var myShape = new createjs.Shape();
 		
 		myShape
 			.graphics
-			.beginLinearGradientFill(["#000","#999", "#FFF"],[ 0.5,0.97, 1], 0, 0, 0, 120)
-			.drawRect(0, 0, 1000, 120);
+			.beginLinearGradientFill(["#000","#FFF"], [0, 1], 0, 0, 0, 15)
+			.drawRect(0,0, 2, 15);
 		
+		myShape.regX = 1;
+		myShape.regY = 15;
 		
-		var move = function(){
-			distance_x++;
-			myShape.x = sin(distance_x);
+	
+		
+		var move = function(event){
+			distance += 100* (event.delta/1000);
+			
+			var circleLength = distance/radius;
+			
+			if(circleLength > 2*Math.PI){
+				distance = distance - 2*Math.PI*radius;
+			}
+			
+			myShape.x = x + Math.cos(circleLength)*radius;
+			myShape.y = y + Math.sin(circleLength)*radius;
+			myShape.rotation = circleLength*(180/Math.PI);
 		}
+		
+		myShape.addEventListener("tick", move);
 		
 		var getShape = function(){
 			return myShape;
 		}
 		
-		return return {
+		return {
 			getShape : getShape,
 			move : move
 		};
 	}
 	
 	
-	var mySwiper = swiper();
-	mySwiper.x = 100;
-	mySwiper.y = 100;
-	stage.addChild(mySwiper);
-	stage.addEventListener("tick",function(){
-		mySwiper.y += 12;
-		mySwiper.alpha -= 0.04;
-	});
+	var mySwiper = swiper(100,100,200);
+	var mySwiper2 = swiper(200,100,200);
+	var mySwiper3 = swiper(300,100,50);
+	var mySwiper4 = swiper(400,100,200);
+	var mySwiper5 = swiper(500,100,200);
+	stage.addChild(mySwiper.getShape());
+	stage.addChild(mySwiper2.getShape());
+	stage.addChild(mySwiper3.getShape());
+	stage.addChild(mySwiper4.getShape());
+	stage.addChild(mySwiper5.getShape());
+	
+	/* stage.addEventListener("tick",function(event){
+		
+		mySwiper.move();
+		mySwiper2.move();
+		mySwiper3.move();
+		mySwiper4.move();
+		mySwiper5.move();
+	}); */
 
 	
 /* 	createjs.Sound.addEventListener("fileload", handleLoadComplete);

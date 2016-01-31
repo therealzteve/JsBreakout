@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css" href="/JsBreakout/style/style.css" />
+
+<link rel="stylesheet" type="text/css" href="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body >
+	<div id="game">
+			<div id="ingame"><canvas  id="myCanvas"  ></canvas></div>
+			<button id="myButton" >Stop </button>
+	</div>
+<script type="text/javascript" src="/JsBreakout/lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+<script type="text/javascript" src="/JsBreakout/lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+<script type="text/javascript" src="/JsBreakout/lib/SoundJS-0.6.2/lib/soundjs-0.6.2.combined.js"></script>
+<script type="text/javascript" src="/JsBreakout/lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript" src="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.js" ></script>
+<script>
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 800;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCED;
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var raster = new createjs.Bitmap("/JsBreakout/img/laser.png");
+	
+	var traveller = function(color){
+		
+		var speed = 0;
+		var myShape = new createjs.Shape();
+		myShape
+			.graphics
+			.beginFill(color)
+			.drawCircle(0,0,4);
+		
+		myShape.shadow = new createjs.Shadow("#0F0",0,0,3);
+		
+		var move =  function(delta){
+			myShape.x += speed * (delta/1000);
+		}
+		
+		var setSpeed = function(newSpeed){
+			speed = newSpeed;
+		}
+		return {
+			shape : myShape,
+			move : move,
+			setSpeed: setSpeed
+		}
+	}
+	
+	var laserPointer = function(x,y,radius){
+		var speed = 400;
+		var inertia = 20;
+		
+		var objectContainer = new createjs.Container();
+		objectContainer.x = x;
+		objectContainer.y = y;
+		
+		var point = traveller("#0F0");
+		point.setSpeed(speed);
+		
+		var followPoint = traveller("#000");
+		var lines = [];
+		
+		for(var i = 0; i < 50 ; i++){
+			var line = new createjs.Shape();
+			line.shadow = new createjs.Shadow("#0F0",0,0,5);
+			lines.push(line);
+			objectContainer.addChild(line);
+		}
+
+		
+		
+		//objectContainer.addChild(followPoint.shape);
+		//objectContainer.addChild(line);
+		objectContainer.addChild(point.shape);
+
+		var i = 0;
+		var gravityForce;
+		var move = function(event){
+			i++;
+			
+			point.move(event.delta);
+			
+			gravityForce = (500 /((point.shape.x - followPoint.shape.x)));
+			if( Math.abs(point.shape.x - followPoint.shape.x) - Math.abs(gravityForce)*(event.delta/1000) > 0 ){
+				followPoint.setSpeed((point.shape.x - followPoint.shape.x)*inertia +  gravityForce);
+				followPoint.move(event.delta);
+			}else{
+				followPoint.shape.x = point.shape.x;
+			}
+			
+			for(var j = 0; j < lines.length ; j++){
+				lines[j].graphics
+				.clear()
+				.setStrokeStyle(1)
+				//.beginStroke("rgba(0,255,0,0.5)")
+				.beginLinearGradientStroke(["#0F0","rgba(0,0,0,0)"], [0, 1], point.shape.x, point.shape.y, followPoint.shape.x,followPoint.shape.y)
+				.moveTo(point.shape.x,point.shape.y)
+				.lineTo(followPoint.shape.x,followPoint.shape.y);
+			}
+			
+			
+			
+			if(i == 50){
+				point.setSpeed(800);
+			}
+			
+			if(i == 100){
+				point.setSpeed(-400);
+			}
+			
+			if(i == 150){
+				point.setSpeed(800);
+			}
+			
+			if(i == 200){
+				point.setSpeed(-1000);
+			}
+			
+			if(i == 250){
+				point.setSpeed(0);
+				objectContainer.removeAllEventListeners("tick");
+			}
+		}
+		
+		objectContainer.addEventListener("tick", move);
+		
+		var getShape = function(){
+			return objectContainer;
+		}
+		
+		
+		return {
+			getShape : getShape,
+			move : move
+		};
+	}
+	
+	
+	var mylaserPointer = laserPointer(100,100,2);
+	stage.addChild(mylaserPointer.getShape());
+	/* stage.addEventListener("tick",function(event){
+		
+		mylaserPointer.move();
+		mylaserPointer2.move();
+		mylaserPointer3.move();
+		mylaserPointer4.move();
+		mylaserPointer5.move();
+	}); */
+
+	
+/* 	createjs.Sound.addEventListener("fileload", handleLoadComplete);
+	createjs.Sound.registerSound({src:"Intro.mp3", id:"sound"});
+	function handleLoadComplete(event) {
+	    createjs.Sound.play("sound");
+	    window.setTimeout(function(){
+			
+		}, 6440)
+	} */
+	
+</script>
+</body>
+
+</html>
