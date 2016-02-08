@@ -37,127 +37,41 @@
 	createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCED;
 	createjs.Ticker.addEventListener("tick", stage);
 	
-	var raster = new createjs.Bitmap("/JsBreakout/img/laser.png");
+	// Define a spritesheet. Note that this data was exported by Zoë.
+	var spriteSheet = new createjs.SpriteSheet({
+			framerate: 30,
+			"images": ["testSprite.png"],
+			"frames": {"regX": 0, "height": 32, "count": 80, "regY": 0, "width": 32},
+			
+			// define two animations, run (loops, 1.5x speed) and jump (returns to run):
+			"animations": {
+				"run": [0, 79, "run"]
+			}
+		});
 	
-	var traveller = function(color){
+	var Particle = function(direction, parent){
+		var grant = new createjs.Sprite(spriteSheet, "run");
+
 		
-		var speed = 0;
-		var myShape = new createjs.Shape();
-		myShape
-			.graphics
-			.beginFill(color)
-			.drawCircle(0,0,4);
+		// Add Grant to the stage, and add it as a listener to Ticker to get updates each frame.
+		parent.addChild(grant);	
 		
-		myShape.shadow = new createjs.Shadow("#0F0",0,0,3);
 		
-		var move =  function(delta){
-			myShape.x += speed * (delta/1000);
-		}
-		
-		var setSpeed = function(newSpeed){
-			speed = newSpeed;
-		}
-		return {
-			shape : myShape,
-			move : move,
-			setSpeed: setSpeed
-		}
+		grant.setEventListener('tick',function(){
+			
+		});
 	}
 	
-	var snake = function(x,y){
-		var speed = 400;
-		var fadeTime =  1000;
-		var points = [];
+	var ParticleThrower = function(){
+		var base = new createjs.Shape();
+		base.graphics.beginFill("#FFF").drawCircle(0,0,5);
 		
-		var objectContainer = new createjs.Container();
-		objectContainer.x = x;
-		objectContainer.y = y;
 		
-		var trav = new traveller("#FFF");
-		trav.setSpeed(speed);
-		var tail = new createjs.Shape();
 		
-		objectContainer.addChild(trav.shape);
-		objectContainer.addChild(tail)
-		
-		var myCounter = 0;
-		var move = function(event){
-			myCounter++;			
-			trav.move(event.delta);		
-			points.push({x : trav.shape.x, y: trav.shape.y, alpha : 1});
-			
-			if(points.length > 1){
-				tail.graphics.clear();
-				for(var i = 0 ; i < points.length - 1; i++ ){
-					tail.graphics
-						.beginStroke("rgba(255,255,255," + points[i].alpha + ")")
-						.moveTo(points[i].x, points[i].y)
-						.lineTo(points[i+1].x, points[i+1].y);
-				}
-				for(var i = 0; i < points.length; i++){
-					points[i].alpha -= (fadeTime/1000)*(event.delta/1000)
-					console.log(points[i].alpha);
-					if(points[i].alpha <= 0){
-						points.splice(i, 1);
-					}
-				}
-			}
-			
-			if(myCounter == 100){
-				trav.setSpeed(-10);
-			}
-				
-			if(myCounter == 200){
-				trav.setSpeed(-200);
-			}
-				
-			if(myCounter == 300){
-				trav.setSpeed(800);
-			}
-				
-			if(myCounter == 400){
-				trav.setSpeed(-1000);
-			}
-				
-			if(myCounter == 500){
-				trav.setSpeed(0);
-				objectContainer.removeAllEventListeners("tick");
-			}
-		}
-			
-		
+	}
+	
 
-		objectContainer.addEventListener("tick", move);
 
-			var getShape = function() {
-				return objectContainer;
-			}
-
-			return {
-				getShape : getShape,
-				move : move
-			};
-		}
-
-		var mySnake = snake(100, 100, 2);
-		stage.addChild(mySnake.getShape());
-		/* stage.addEventListener("tick",function(event){
-			
-			mylaserPointer.move();
-			mylaserPointer2.move();
-			mylaserPointer3.move();
-			mylaserPointer4.move();
-			mylaserPointer5.move();
-		}); */
-
-		/* 	createjs.Sound.addEventListener("fileload", handleLoadComplete);
-		 createjs.Sound.registerSound({src:"Intro.mp3", id:"sound"});
-		 function handleLoadComplete(event) {
-		 createjs.Sound.play("sound");
-		 window.setTimeout(function(){
-		
-		 }, 6440)
-		 } */
 	</script>
 </body>
 
