@@ -40,37 +40,68 @@
 	// Define a spritesheet. Note that this data was exported by Zoë.
 	var spriteSheet = new createjs.SpriteSheet({
 			framerate: 30,
-			"images": ["testSprite.png"],
-			"frames": {"regX": 0, "height": 32, "count": 80, "regY": 0, "width": 32},
+			"images": ["testSprite2.png"],
+			"frames": {"regX": 16, "height": 32, "count": 40, "regY": 16, "width": 32},
 			
 			// define two animations, run (loops, 1.5x speed) and jump (returns to run):
 			"animations": {
-				"run": [0, 79, "run"]
+				"run": [0, 39, false]
 			}
 		});
 	
-	var Particle = function(direction, parent){
+	var Particle = function(startPoint,direction, parent){
+		var beginningSpeed = 20;
+		var speed = beginningSpeed;
 		var grant = new createjs.Sprite(spriteSheet, "run");
 
-		
+		grant.x = startPoint.x;
+		grant.y = startPoint.y;
 		// Add Grant to the stage, and add it as a listener to Ticker to get updates each frame.
 		parent.addChild(grant);	
 		
 		
-		grant.setEventListener('tick',function(){
+		grant.addEventListener('tick',function(event){
+			grant.x += direction.x * speed* (event.delta/1000);
+			grant.y += direction.y * speed* (event.delta/1000);
 			
+			speed = speed - (10 * (event.delta/1000) );
+			grant.alpha = speed/beginningSpeed;
+			if(speed <= 0 ){
+				grant.removeAllEventListeners('tick');
+				parent.removeChild(grant);
+			}
 		});
+		
+		return {};
 	}
 	
 	var ParticleThrower = function(){
+		var interval = 3;
+		var timePassed = 0;
 		var base = new createjs.Shape();
+		var animationContainer = new createjs.Container();
+		animationContainer.x = 200;
+		animationContainer.y = 200;
 		base.graphics.beginFill("#FFF").drawCircle(0,0,5);
+	
+		animationContainer.addChild(base);
+		animationContainer.addEventListener('tick', function(event){
+			base.x += 150 * (event.delta/1000);
+			timePassed += (event.delta);
+			if(timePassed >= interval){
+				timePassed -= interval;
+				var randomAngle = Math.random()*(2* Math.PI);
+				Particle({"x" : base.x, "y" : base.y},{"x" : Math.cos(randomAngle), "y" : Math.sin(randomAngle)},animationContainer);
+			}
+			
+			
+		});
 		
-		
+		stage.addChild(animationContainer);
 		
 	}
 	
-
+	ParticleThrower();
 
 	</script>
 </body>
