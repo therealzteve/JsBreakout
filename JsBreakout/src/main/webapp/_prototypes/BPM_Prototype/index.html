@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css"
+	href="/JsBreakout/style/style.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body>
+	<div id="game">
+		<div id="ingame">
+			<canvas id="myCanvas"></canvas>
+		</div>
+		<button id="myButton">Stop</button>
+	</div>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/SoundJS-0.6.2/lib/soundjs-0.6.2.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	<script>
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 800;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCED;
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var BPM = 120;
+	
+	
+	var Bar = function(barShape, x,y){
+		var margin = 5;
+		var max = 70;
+		var reduceSpeed = 140*2;
+		var currentAmount = 0;
+		var animationContainer = new createjs.Container();
+		animationContainer.x = x;
+		animationContainer.y = y;
+		var barElements = [];
+		
+		var y = 0;
+		for(var i = 0; i < max; i++){
+			barElements.push(barShape.clone());
+			barElements[i].y = y;
+			y += barElements[i].getBounds().height + margin;
+			animationContainer.addChild(barElements[i]);
+		}
+		
+		
+		animationContainer.addEventListener("tick", function(event){
+			for(var i = 0; i < Math.floor(currentAmount); i++){
+				barElements[i].alpha = 1;
+			}
+			
+			for(var i = Math.floor(currentAmount); i < max; i++){
+				barElements[i].alpha = 0;
+			}
+			
+			if(currentAmount > reduceSpeed* (event.delta/1000)){
+				currentAmount -=  reduceSpeed* (event.delta/1000);
+			}else{
+				currentAmount = 0;
+			}
+			
+		});
+		
+		var impuls = function(strength){
+			currentAmount = strength*max;
+		}
+		stage.addChild(animationContainer);
+		return {impuls : impuls};
+		
+	};
+	
+	var barElement = new createjs.Shape();
+	barElement.graphics.beginFill("#F00").drawRect(0,0,40,2);
+	barElement.setBounds(0,0,40,2);
+	
+	function bpmInterval(beats, onInstance, numberOfTimes ){
+		var step = 60000*beats/BPM;
+		var currentDate = new Date().getTime();
+
+		var instance = function(){
+			var newDate = new Date().getTime();
+			var diff = (newDate - currentDate) - step;
+			currentDate = newDate;
+			onInstance();
+			
+            window.setTimeout(instance, (step - diff));
+		}
+		
+		window.setInterval(instance, step)
+	}
+	
+	var bar = Bar(barElement, 300, 300);
+	var bar2 = Bar(barElement, 400, 300);
+	bpmInterval(1, function(){ bar.impuls(1);})
+	bpmInterval(2, function(){ bar2.impuls(1);})
+	</script>
+</body>
+
+</html>

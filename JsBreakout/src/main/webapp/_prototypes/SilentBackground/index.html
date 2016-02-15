@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css"
+	href="/JsBreakout/style/style.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body>
+	<div id="game">
+		<div id="ingame">
+			<canvas id="myCanvas"></canvas>
+		</div>
+		<button id="myButton">Stop</button>
+	</div>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/SoundJS-0.6.2/lib/soundjs-0.6.2.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	<script>
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 800;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCED;
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var fadingWaves = function(imgPath,x,y){
+		var imgShape = new createjs.Bitmap(imgPath);
+		imgShape.alpha = 0;
+		imgShape.x = x;
+		imgShape.y = y;
+		var fadeInTime = 5000;
+		var currentFade = 0;
+		
+		stage.addChild(imgShape);
+		
+		imgShape.addEventListener('tick', function(event){
+
+			currentFade += event.delta;
+			if(currentFade > fadeInTime){
+				currentFade = fadeInTime;
+			}
+			imgShape.alpha= currentFade/fadeInTime;
+			
+			imgShape.alpha -= Math.random()*0.07;
+		});
+		
+	}
+	
+	var bigWave = function(){
+		var imgShape = new createjs.Bitmap("big_wave.png");
+		imgShape.alpha = 0;
+		var fadeInTime = 5000;
+		var currentFade = 0;
+		var speed = 90;
+		imgShape.y = stage.canvas.height-600;
+		stage.addChild(imgShape);
+		
+		imgShape.addEventListener('tick', function(event){
+
+			currentFade += event.delta;
+			if(currentFade > fadeInTime){
+				currentFade = fadeInTime;
+			}
+			imgShape.alpha= currentFade/fadeInTime;
+			
+			imgShape.x -= event.delta/1000 * speed;
+		});
+		
+	}
+	
+	fadingWaves("wave_1.png", 300,300);
+	fadingWaves("wave_2.png",0,0);
+	fadingWaves("wave_3.png", 20,250);
+	bigWave();
+	</script>
+</body>
+
+</html>
