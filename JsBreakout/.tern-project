@@ -1,1 +1,23 @@
-{"plugins":{"guess-types":{},"outline":{},"doc_comment":{},"node":{},"grunt":{}},"libs":["ecma5"],"ecmaVersion":5,"ide":{}}
+{
+  "plugins": {
+    "guess-types": {
+      
+    },
+    "outline": {
+      
+    },
+    "doc_comment": {
+      
+    },
+    "node": {
+      
+    },
+    "grunt": {
+      
+    }
+  },
+  "libs": [
+    "ecma5"
+  ],
+  "ecmaVersion": 5
+}

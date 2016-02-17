@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css"
+	href="/JsBreakout/style/style.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body>
+	<div id="game">
+		<div id="ingame">
+			<canvas id="myCanvas"></canvas>
+		</div>
+		<button id="myButton">Stop</button>
+	</div>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/SoundJS-0.6.2/lib/soundjs-0.6.2.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	<script>
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 800;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCED;
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var LightedDots = function(rasterSize, lightRadius){
+		var x = 200;
+		var y = 200;
+		
+		
+		var dotContainer = new createjs.Container();
+
+		var showDots = function(){
+			/* var testShape = new createjs.Shape();
+			testShape.x = x - lightRadius;
+			testShape.y = y - lightRadius;
+			testShape.graphics.beginStroke("#FFF").drawRect(0,0,lightRadius*2, lightRadius*2);
+			
+			var testCircle = new createjs.Shape();
+			testCircle.x = x;
+			testCircle.y = y;
+			testCircle.graphics.beginStroke("#FFF").drawCircle(0,0,lightRadius);
+			
+			stage.addChild(testShape);
+			stage.addChild(testCircle); */
+			
+			dotContainer.removeAllChildren();
+			
+			for(var i = 0; i < x + lightRadius; i += rasterSize){
+				for(var j = 0; j < y + lightRadius; j += rasterSize){
+					
+					var rasterX = Math.floor(i / rasterSize)*rasterSize;
+					var rasterY = Math.floor(j / rasterSize)*rasterSize;
+					var distanceSquared = Math.pow(rasterX - x,2) + Math.pow(rasterY - y,2);
+					if(distanceSquared <= Math.pow(lightRadius,2)){
+						var distance = Math.sqrt(distanceSquared);
+						var lightedCircle = new createjs.Shape();
+						lightedCircle.x = rasterX;
+						lightedCircle.y = rasterY;
+						lightedCircle.graphics.beginFill("#FFF").drawCircle(0,0,2);
+						lightedCircle.alpha = 1 - Math.pow(distance/lightRadius,6);
+						
+						
+						dotContainer.addChild(lightedCircle);
+					}
+				}
+			}
+		}
+		
+		dotContainer.addEventListener('tick', function(event){
+			x += 70 * (event.delta/1000);
+			showDots();
+			
+			if(x > 600){
+				dotContainer.removeAllEventListeners('tick');
+			}
+		});
+		
+		stage.addChild(dotContainer);
+	}
+	
+	LightedDots(7, 50);
+	
+	</script>
+</body>
+
+</html>

@@ -90,24 +90,51 @@
 	
 	function bpmInterval(beats, onInstance, numberOfTimes ){
 		var step = 60000*beats/BPM;
+		var estimatedTime = step;
 		var currentDate = new Date().getTime();
-
+		
 		var instance = function(){
 			var newDate = new Date().getTime();
-			var diff = (newDate - currentDate) - step;
+			var diff = (newDate - currentDate) - estimatedTime;
 			currentDate = newDate;
 			onInstance();
-			
-            window.setTimeout(instance, (step - diff));
+			estimatedTime = (step - diff);
+            window.setTimeout(instance, estimatedTime);
 		}
 		
-		window.setInterval(instance, step)
+		window.setTimeout(instance, step)
+	}
+	
+	var RadialExplosion = function(radius, startRadius, speed, x,y){
+		var shape = new createjs.Shape();
+		var currentRadius = startRadius;
+		shape.x = x;
+		shape.y = y;
+		
+		stage.addChild(shape);
+		shape.addEventListener('tick', function(event){
+			var transRadius = 10/currentRadius;
+			if( transRadius > 1){
+				transRadius = 1;
+			}
+			shape.graphics.clear().beginStroke("#FFF").beginRadialGradientFill(["#000","#00F"], [1 - transRadius, 1], 0, 0, 0, 0, 0, currentRadius).drawCircle(0,0,currentRadius);
+			currentRadius += speed*(event.delta/1000);
+			
+			if(currentRadius >=  radius){
+				stage.removeChild(shape);
+				shape.removeAllEventListeners('tick');
+			}
+		});
+		
 	}
 	
 	var bar = Bar(barElement, 300, 300);
 	var bar2 = Bar(barElement, 400, 300);
+	bpmInterval(0.5, function(){ RadialExplosion( 50, 40, 50, 500,100); })
 	bpmInterval(1, function(){ bar.impuls(1);})
-	bpmInterval(2, function(){ bar2.impuls(1);})
+	bpmInterval(2, function(){ bar2.impuls(1); RadialExplosion( 100, 50, 200, 100,100);})
+	
+	
 	</script>
 </body>
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Js Breakout</title>
+<link rel="stylesheet" type="text/css"
+	href="/JsBreakout/style/style.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+
+
+</head>
+<body>
+	<div id="game">
+		<div id="ingame">
+			<canvas id="myCanvas"></canvas>
+		</div>
+		<button id="myButton">Stop</button>
+	</div>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/TweenJS-0.6.1/lib/tweenjs-0.6.1.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/EaselJS-0.8.1/lib/easeljs-0.8.1.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/SoundJS-0.6.2/lib/soundjs-0.6.2.combined.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+	<script type="text/javascript"
+		src="/JsBreakout/lib/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	<script>
+	
+	var stage = new createjs.Stage("myCanvas");
+	stage.canvas.width = 800;
+	stage.canvas.height = 800;
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCED;
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	var RadialExplosion = function(radius, startRadius, speed, x,y){
+		var shape = new createjs.Shape();
+		var currentRadius = startRadius;
+		shape.x = x;
+		shape.y = y;
+		
+		stage.addChild(shape);
+		shape.addEventListener('tick', function(event){
+			var transRadius = 10/currentRadius;
+			if( transRadius > 1){
+				transRadius = 1;
+			}
+			shape.graphics.clear().beginStroke("#FFF").beginRadialGradientFill(["#000","#00F"], [1 - transRadius, 1], 0, 0, 0, 0, 0, currentRadius).drawCircle(0,0,currentRadius);
+			currentRadius += speed*(event.delta/1000);
+			
+			if(currentRadius >=  radius){
+				stage.removeChild(shape);
+				shape.removeAllEventListeners('tick');
+			}
+		});
+		
+	}
+	
+	RadialExplosion( 100, 50, 200, 100,100);
+	</script>
+</body>
+
+</html>
